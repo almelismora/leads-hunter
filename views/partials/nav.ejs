@@ -1,0 +1,81 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+  <div class="container mx-auto">
+
+    
+    <a class="navbar-brand" href="/">Inicio</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav" style="display: flex; flex-direction: row; align-items: center;">
+
+        <% if (user) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/users">Clientes</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/favoritos">Favoritos</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categorías
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/users/aplicadores">Aplicadores</a>
+              <a class="dropdown-item" href="/users/distribuidores">Distribuidores</a>
+              <a class="dropdown-item" href="/users/fabricantes">Fabricantes</a>
+              <a class="dropdown-item" href="/users/otros">Otros</a>
+            </div>
+          </li>
+
+          <li class="nav-item" style="display: flex; margin-left: 15rem;">
+            <!-- select para filtrar -->
+            <form action="/users/run-script" method="POST">
+              <div class="form-row align-items-center">
+                <div class="d-flex ml-5">
+                  <p class="text-white mt-2">Elegir Hashtag</p>
+                </div>
+                
+                <div class="col-auto my-1">
+                  <!-- <label class="mr-sm-2" for="inlineFormCustomSelect">Preference</label> -->
+                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="select_tag" >
+                    <option></option>
+                    <option value="microcemento">#microcemento</option>
+                    <option value="microcement">#microcement</option>
+                    <option value="microciment">#microciment</option>
+                    <option value="microcimento">#microcimento</option>
+                    <option value="mikrozement">#mikrozement</option>
+                    <option value="mikrocement">#mikrocement</option>
+                    <option value="микроцемент">#микроцемент</option>
+                    <option value="hormigonimpreso">#hormigonimpreso</option>
+                    <option value="bétonimprimé">#bétonimprimé</option>
+                    <option value="betonstemplowany">#betonstemplowany</option>
+                    <option value="штампованныйбетон">#штампованныйбетон</option>
+                  </select>
+                </div>
+                
+                <div class="col-auto my-1">
+                  <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+                </div>
+              </div>
+            </form>
+          </li>
+
+          <li class="nav-item ml-5">
+            <a href="/auth/logout" class="nav-link">Log Out</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+
+

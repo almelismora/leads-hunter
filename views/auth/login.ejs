@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/header.ejs') %>
+    <title>USERS</title>
+</head>
+<body>
+    <%- include('../partials/nav2.ejs') %>
+
+
+
+<div class="container my-5">
+
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card text-center">
+                <div id="login-img">
+                    <img src="/images/mylogo.png" alt="">
+                </div>
+                <div class="card-header">
+                    <h3>Log In</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/auth/login" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="email" placeholder="Email" class="form-control" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="Password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success">Log In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%- include('../partials/footer.ejs') %>
+
+
+</body>
+</html>

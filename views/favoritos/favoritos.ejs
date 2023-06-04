@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/header.ejs') %>
+    <title>Favoritos</title>
+</head>
+<body>
+    <%- include('../partials/nav.ejs') %>
+
+    <section id="main">
+
+        <h2 class="m-5">TUS FAVORITOS</h2>
+
+        <div id="datatables" class="m-5 mx-auto">
+
+            <table id="mytable" class="table table-hover table-stripped table-bordered">
+
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>ACCOUNT</th>
+                        <th>DESCRIPTION</th>
+                        <th>WEBSITE</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th>USERS ID</th>
+                        <th>YOUR NOTE</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (info) { %>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 mx-auto">
+                                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                        <%= info %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %> 
+                    
+
+
+                    <% for (let i = 0; i < favoritos.length; i++){ %>
+                        <tr>
+                            <td><%= favoritos[i].name %></td>
+                            <td><%= favoritos[i].account %></td>
+                            <td><%= favoritos[i].description %></td>
+                            <% if (favoritos[i].website_link != ' - ') { %>
+                                <td><a href="<%= favoritos[i].website_link %>"><%= favoritos[i].website_name %></a></td>
+                            <% } else { %>
+                                <td>None</td>
+                            <% } %>
+                            
+                            <td><%= favoritos[i].email %></td>
+                            <td><%= favoritos[i].phone %></td>  
+                            <td><%= favoritos[i].user_id %></td>
+                            <td><%= favoritos[i].note %></td>
+                            <td>
+                                <form action="/favoritos/addnote/<%= favoritos[i].id %>" method="post">
+                                    <input type="hidden" name="selectedRow" value="<%= favoritos[i].id %>">
+                                    <button class="btn btn-info" type="submit">Add a Note</button>
+                                </form>
+                                <!-- <a href="/favoritos/addnote/<%= favoritos[i].id %>">Add a Note</a> -->
+                            </td>
+                            <td>
+                                <form action="/favoritos/delete/<%= favoritos[i].id %>" method="post">
+                                    <input type="hidden" name="selectedRow" value="<%= favoritos[i].id %>">
+                                    <button class="btn btn-danger" type="submit">Remove from Favorites</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    <% } %>
+                    <!-- <button class="btn btn-danger" type="submit">Remove From Favorites</button> -->
+
+                </tbody>
+                <tfoot>
+                    <th>NAME</th>
+                    <th>ACCOUNT</th>
+                    <th>DESCRIPTION</th>
+                    <th>WEBSITE</th>
+                    <th>EMAIL</th>
+                    <th>PHONE</th>
+                    <th>USERS ID</th>
+                    <th>YOUR A NOTE</th>
+                    <th></th>
+                    <th></th>
+                </tfoot>
+            </table>
+
+        </div>
+
+    </section>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

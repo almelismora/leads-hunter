@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/header.ejs') %>
+    <title>Add a Note</title>
+</head>
+<body>
+    <section id="main">
+
+        <div id="datatables" class="m-5 mx-auto">
+
+            <table id="mytable" class="table table-hover table-stripped table-bordered">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>ACCOUNT</th>
+                        <th>DESCRIPTION</th>
+                        <th>WEBSITE</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th>USERS ID</th>
+                        <th>YOUR NOTE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= fav.id %></td>
+                        <td><%= fav.name %></td>
+                        <td><%= fav.account %></td>
+                        <td><%= fav.description %></td>
+                        <% if (fav.website_link != ' - ') { %>
+                            <td><a href="<%= fav.website_link %>"><%= fav.website_name %></a></td>
+                        <% } else { %>
+                            <td>None</td>
+                        <% } %>
+                        <td><%= fav.email %></td>
+                        <td><%= fav.phone %></td>  
+                        <td><%= fav.user_id %></td>
+                        <td>
+                            <form action="/favoritos/updatenote/<%= fav.id %>" method="post">
+                                <input type="hidden" name="selectedRow" value="<%= fav.id %>">
+                                <textarea name="note" id="note" placeholder="Write here..."></textarea>
+                                <button class="btn btn-success" type="submit">Save Note</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>ACCOUNT</th>
+                    <th>DESCRIPTION</th>
+                    <th>WEBSITE</th>
+                    <th>EMAIL</th>
+                    <th>PHONE</th>
+                    <th>USERS ID</th>
+                    <th>YOUR A NOTE</th>
+                </tfoot>
+            </table>
+
+            
+
+        </div>
+
+    </section>
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add a note</title>
+</head>
+<body>
+    <form action="/updatenote" method="POST">
+        <label for="note">Note:</label>
+        <textarea name="note" id="note" placeholder="Enter the new note"></textarea>
+        <button type="submit">Save Note</button>
+    </form>
+</body>
+</html> -->
+

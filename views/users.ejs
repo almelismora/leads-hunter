@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/header.ejs') %>
+    <title>CLIENTS</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+
+    <section id="main">
+    
+        <h2 class="m-5">CLIENTES ENCONTRADOS</h2>
+
+
+        <div id="datatables" class="m-5 mx-auto">
+    
+            <table id="mytable" class="table table-hover table-stripped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>ACCOUNT</th>
+                        <th>DESCRIPTION</th>
+                        <th>WEBSITE</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0; i < users.length; i++){ %>
+                        <tr>
+                            <td><%= users[i].id %></td>
+                            <td><%= users[i].name %></td>
+                            <td><%= users[i].account %></td>
+                            <td><%= users[i].description %></td>
+                            <% if (users[i].website_link != ' - ') { %>
+                                <td><a href="<%= users[i].website_link %>"><%= users[i].website_name %></a></td>
+                            <% } else { %>
+                                <td>None</td>
+                            <% } %>
+                            
+                            <td><%= users[i].email %></td>
+                            <td><%= users[i].phone %></td>     
+                            <td>
+                                <form action="/users/addtofav/<%= users[i].id %>" method="post">
+                                    <input type="hidden" name="selectedRow" value="<%= users[i].id %>">
+                                    <button class="btn btn-success" type="submit">Add to Favorites</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>ACCOUNT</th>
+                        <th>DESCRIPTION</th>
+                        <th>WEBSITE</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+    
+        </div>
+
+    </section>
+    
+
+    <%- include('partials/footer.ejs') %>
+
+
+</body>
+</html>

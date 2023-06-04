@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#datatables {
+  width: 80%;
+  margin: 2rem;
+}
+
+
+#home {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 100vh;
+  background-color: #202428;
+
+}
+
+#index-div1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 70%;
+  color: white;
+}
+
+
+
+#index-form {
+  display: flex;
+  padding: 2rem;
+
+}
+
+#index-form form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#index-form form button{
+  padding: .5rem 2rem;
+  margin: 1rem;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color:#343a40
+}
+
+
+
+#index-div1 #logo-img {
+  background-color: rgba(255, 255, 255, 0.398);
+  padding: 2rem;
+  border-radius: 5px;
+}
+
+
+
+#signup button {
+  border: none;
+  outline: none;
+  background-color: none;
+  border-radius: 5px;
+  padding: .5rem 2rem;
+  margin: 1rem;
+}
+
+#signup a {
+  text-decoration: none;
+  color:#343a40
+}
