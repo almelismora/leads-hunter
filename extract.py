@@ -2,43 +2,49 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import time
+import urllib.request
 import mysql.connector
+import uuid
 import sys
 import re
 import os
-from dotenv import load_dotenv 
+# from dotenv import load_dotenv 
 
-load_dotenv()
+# load_dotenv()
 
 # input credencials login
-instausername = os.getenv("MYIGUSERNAME")
-instapassword = os.getenv("MYIGPASSWORD")
+# instausername = os.getenv("MYIGUSERNAME")
+# instapassword = os.getenv("MYIGPASSWORD")
+instausername = "topcimentelis"
+instapassword = "topciment1234"
 
 # Chrome options
-chrome_options = Options()
-chrome_options.add_argument('--disable-features=AmbientLightSensor')
+# chrome_options = Options()
+# chrome_options.add_argument('--headless')
+# chrome_options.add_argument('--disable-features=AmbientLightSensor')
 path_to_chromedriver = './chromedriver.exe'
 service = Service(path_to_chromedriver)
 
 #Navegador
-browser = webdriver.Chrome(service = service, options=chrome_options)
+browser = webdriver.Chrome(service = service)
 
 # selected option from node (hashtag)
-selected_value = sys.argv[1]
+# selected_value = sys.argv[1]
+selected_value = "microcement"
+
 
 url = 'https://www.instagram.com/'
 url_pag = url + '/explore/tags/' + selected_value
 
-#bbdd
+# bbdd
 mycon = mysql.connector.connect(
-    host = os.getenv("MYHOST"),
-    user = os.getenv("MYUSER"),
-    password = os.getenv("MYPASSWORD"),
-    database = os.getenv("MYDATABASE")
+    host = "151.80.13.213",
+    user = "apptopciment_captacion_leads",
+    password = "nXnGy8QvN6",
+    database = "apptopciment_captacion_leads"
 )
 
 mycursor = mycon.cursor()
@@ -105,23 +111,24 @@ phone_number = None
 email = None
 contact_page = None
 
-phone_pattern = r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b|(?:\d{3}|\(\d{3}\))[ -.]?\d{3}[ -.]?\d{4}|(?:\+\d{2}[-. ]?)?\d{3,}[.-]?\d{3,}[.-]?\d{3,}|(?:(?:\+|00)\d{2}[-. ]?)?(?:\d{2,3}[-. ]?)?\d{6,}|(?:\+?9\d{1,2}[-. ]?)?[2-9]\d{6,7}|\+\d{11}|00\d{11}|\(\d{3}\) \d{8}|\d{2}-\d{4}-\d{4}|\+\d{3}-\d{1}-\d{6}|\d{3} \d{2} \d{2} \d{2}|\d{3} \d{3} \d{2} \d{2}|^00\d{10}$|^\d{4} \d{3} \d{3}$'
+phone_pattern = r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b|(?:\d{3}|\(\d{3}\))[ -.]?\d{3}[ -.]?\d{4}|(?:\+\d{2}[-. ]?)?\d{3,}[.-]?\d{3,}[.-]?\d{3,}|(?:(?:\+|00)\d{2}[-. ]?)?(?:\d{2,3}[-. ]?)?\d{6,}|(?:\+?9\d{1,2}[-. ]?)?[2-9]\d{6,7}|\+\d{11}|00\d{11}|\(\d{3}\) \d{8}|\d{2}-\d{4}-\d{4}|\+\d{3}-\d{1}-\d{6}|\d{3} \d{2} \d{2} \d{2}|\d{3} \d{3} \d{2} \d{2}'
 
 def extract():
 
     # sacacmos los ususarios que ya estan en la bbdd
     mycursor = mycon.cursor()
-    mycursor.execute("SELECT * FROM clients")
-    myusers = mycursor.fetchall()
+    mycursor.execute("SELECT * FROM posts")
+    myposts = mycursor.fetchall()
     mycon.commit()
 
-    for col in myusers:
+    for col in myposts:
         user_link = col[2]
         db_users.append(user_link)
 
         post_link = col[1]
         db_posts.append(post_link)
     print("users in db:", len(db_users), "\nposts in db", len(db_posts))
+
 
 
 
@@ -241,18 +248,6 @@ def extract_insert_user(url_pag):
             print('website_name:', website)
             print('website_link:', website_link)
 
-
-            # Search emails and phone numbers
-
-            # Check for email and phone number in the description
-            # email_in_description = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b', description)
-            # if email_in_description:
-            #     email = email_in_description[0]
-
-
-            # phone_in_description = bs.find_all("h1", string=re.compile(r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b|(?:\d{3}|\(\d{3}\))[ -.]?\d{3}[ -.]?\d{4}|(?:\+\d{2}[-. ]?)?\d{3,}[.-]?\d{3,}[.-]?\d{3,}|(?:(?:\+|00)\d{2}[-. ]?)?(?:\d{2,3}[-. ]?)?\d{6,}|(?:\+?9\d{1,2}[-. ]?)?[2-9]\d{6,7}'))
-            # if phone_in_description:
-            #     phone_number = phone_in_description[0]
 
             if r'youtube' or r'facebook' in website:
                 pass
@@ -380,14 +375,85 @@ def extract_insert_user(url_pag):
 
             # insertamos usuarios a la bbdd
             mycursor = mycon.cursor()
-            sql = "INSERT INTO clients (post_link, user_link, name, account, description, website_link, website_name, email, phone) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (new_post, user, name, account, description, website_link, website, email, phone_number,)
+            sql = "INSERT INTO users (post_link, user_link, name, account, description, website_link, website_name, email, phone, hashtag) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (new_post, user, name, account, description, website_link, website, email, phone_number, selected_value, )
             mycursor.execute(sql, val)
             mycon.commit()
 
 
         except Exception as e:
             print(e)
+
+
+def extract_insert_post():
+    # scrapear las paginas de cada publicacion que esta en nuestra lista y insertar los datos a la bbdd
+    try:
+        for post in post_list:
+
+            browser.get('https://www.instagram.com/' + str(post))
+            time.sleep(5)
+            page = browser.page_source
+            bsoup = BeautifulSoup(page, "html.parser")
+
+            # user's link
+            user_div = bsoup.find('div', attrs={"class":"xt0psk2"}) # cant findthis element, i think
+            for user in user_div:
+                user = user.find('a', attrs={"role":"link"})
+                user_link = user['href']
+            # print('User link:', user_link)
+
+
+            # image's link
+            img_div = bsoup.find('div', attrs={"class":"_aagv"})
+            for img in img_div:
+                imagen_src = img['src']
+            # print('IMG link:', imagen_src)
+
+
+            # description
+            post_caption = bsoup.find('h1', attrs={"class":"_aacl _aaco _aacu _aacx _aad7 _aade"})
+            if post_caption:
+                caption = post_caption.text.strip()
+            else:
+                caption = " - "
+            # print('Description:', caption.encode())
+
+
+            # name for saved image
+            username = str(user_link).replace('/', '')
+            filename = str(username) + '--' + uuid.uuid4().hex + '.jpg'
+            linkToFile = imagen_src
+            localDestination = "images/" + filename
+            resultFilePath, responseHeaders = urllib.request.urlretrieve(linkToFile, localDestination)
+            # print('Result File Path:', resultFilePath, '\nResponse Headers:', responseHeaders)
+
+            # converting img to blob
+            with open(localDestination, 'rb') as img_file:
+                binaryData = img_file.read()
+
+
+            # inserting data
+            mycursor = mycon.cursor()
+            sql = "INSERT INTO posts (post_link, user_link, img_b, description, img_name_location, hashtag) VALUES (%s, %s, %s, %s, %s, %s)"
+            val = (post, user_link, binaryData, caption, localDestination, selected_value, )
+            mycursor.execute(sql, val)
+            mycon.commit()
+
+
+    except Exception as e:
+        print(e)
+
+
+    # actualizando el foreign key
+    try:
+        mycursor = mycon.cursor()
+        mycursor.execute("UPDATE users, posts SET posts.user_id = users.id WHERE posts.user_link = users.user_link")
+        mycon.commit()
+    except Exception as e:
+        print(e)
+
+
+
 
 
 #Empezar Ejecución
@@ -402,4 +468,8 @@ if __name__ == "__main__":
 
     extract_insert_user(url_pag)
 
+    extract_insert_post()
+
     browser.quit()
+
+
